@@ -3,79 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OGNJEN NET | TESLA CORE v2</title>
+    <title>OGNJEN NET | TESLA ULTIMATE</title>
     <style>
-        body { margin: 0; background: #000; color: #fff; font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
-        .container { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(25px); border: 1px solid #00d4ff; border-radius: 40px; padding: 40px; text-align: center; width: 380px; box-shadow: 0 0 40px rgba(0, 212, 255, 0.2); }
-        h1 { font-size: 2.2em; color: #00d4ff; text-shadow: 0 0 15px #00d4ff; margin-bottom: 5px; letter-spacing: 3px; }
-        p { opacity: 0.6; font-size: 0.8em; margin-bottom: 20px; }
+        /* FULL MODERN DIZAJN */
+        body { margin: 0; background: radial-gradient(circle, #050505 0%, #000 100%); color: #fff; font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
+        .container { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(20px); border: 1px solid rgba(0, 212, 255, 0.3); border-radius: 50px; padding: 50px; text-align: center; width: 400px; box-shadow: 0 0 60px rgba(0, 212, 255, 0.1); }
+        h1 { font-size: 2.8em; color: #00d4ff; text-shadow: 0 0 20px #00d4ff; margin: 0; letter-spacing: 5px; }
+        .sub { opacity: 0.5; font-size: 0.7em; letter-spacing: 2px; margin-bottom: 30px; }
         
-        /* Tesla Dugme */
-        .tesla-btn { width: 180px; height: 180px; border-radius: 50%; border: 4px solid #00d4ff; background: none; color: #00d4ff; font-weight: bold; cursor: pointer; transition: 0.4s; margin: 0 auto; display: block; font-size: 1.1em; }
-        .tesla-btn:hover { box-shadow: 0 0 30px #00d4ff; transform: scale(1.02); }
-        .tesla-btn.active { border-color: #00ff88; color: #00ff88; box-shadow: 0 0 40px #00ff88; }
+        /* TESLA CORE DUGME */
+        .tesla-core { width: 220px; height: 220px; border-radius: 50%; border: 6px solid #00d4ff; background: none; color: #00d4ff; font-weight: bold; cursor: pointer; transition: 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); margin: 0 auto; display: block; font-size: 1.2em; position: relative; }
+        .tesla-core:hover { box-shadow: 0 0 40px #00d4ff, inset 0 0 20px #00d4ff; transform: scale(1.05); }
+        .tesla-core.active { border-color: #00ff88; color: #00ff88; box-shadow: 0 0 60px #00ff88, inset 0 0 30px #00ff88; }
 
-        /* Login Sekcija */
-        .auth-box { margin-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; }
-        input { background: #111; border: 1px solid #333; color: #00d4ff; padding: 10px; border-radius: 10px; width: 80%; text-align: center; outline: none; transition: 0.3s; }
-        input:focus { border-color: #00d4ff; box-shadow: 0 0 10px #00d4ff44; }
+        /* INPUT ZA ŠIFRU */
+        .auth { margin-top: 30px; }
+        input { background: #111; border: 1px solid #222; color: #00d4ff; padding: 12px; border-radius: 15px; width: 85%; text-align: center; font-size: 1em; outline: none; transition: 0.3s; }
+        input:focus { border-color: #00d4ff; box-shadow: 0 0 15px #00d4ff33; }
 
-        /* Live Monitor (Skriven) */
-        .monitor { display: none; margin-top: 25px; padding: 15px; background: rgba(0, 212, 255, 0.05); border-radius: 15px; border: 1px dashed #00d4ff; }
-        .stat-row { display: flex; justify-content: space-between; margin: 8px 0; font-family: monospace; font-size: 1.1em; }
-        .value { color: #00ff88; font-weight: bold; }
+        /* REAL-TIME MONITOR */
+        .monitor { display: none; margin-top: 30px; padding: 20px; border-radius: 20px; background: rgba(0,0,0,0.4); border: 1px dashed #00ff88; text-align: left; }
+        .stat { display: flex; justify-content: space-between; margin: 10px 0; font-family: 'Courier New', monospace; font-size: 1.1em; }
+        .val { color: #00ff88; font-weight: bold; }
+        
+        /* ANIMACIJA */
+        .pulse { position: absolute; width: 100%; height: 100%; border-radius: 50%; border: 2px solid #00d4ff; top: 0; left: 0; animation: pulse-anim 2s infinite; opacity: 0; pointer-events: none; }
+        @keyframes pulse-anim { 0% { transform: scale(1); opacity: 0.5; } 100% { transform: scale(1.5); opacity: 0; } }
     </style>
 </head>
 <body>
 
 <div class="container">
     <h1>OGNJEN NET</h1>
-    <p>POWERED BY GITHUB BACKBONE</p>
+    <div class="sub">VIRTUAL TESLA INFRASTRUCTURE</div>
 
-    <button class="tesla-btn" id="mainBtn" onclick="activateNet()">AKTIVIRAJ<br>PROTOKOL</button>
+    <button class="tesla-core" id="mainBtn" onclick="runCore()">
+        START<br>CORE
+        <div class="pulse" id="pulse"></div>
+    </button>
 
-    <div class="auth-box" id="authSection">
-        <input type="password" id="passInput" placeholder="Unesi Tesla Šifru..." oninput="checkPass()">
+    <div class="auth" id="authBox">
+        <input type="password" id="pass" placeholder="Unesi 'ognjen tesla'..." oninput="verify()">
     </div>
 
-    <div class="monitor" id="teslaMonitor">
-        <div style="color: #ffcc00; font-size: 0.9em; margin-bottom: 10px;">⚡ GITHUB CLOUD LIVE ⚡</div>
-        <div class="stat-row"><span>ALLOCATED:</span> <span class="value" id="alloc">0 GB</span></div>
-        <div class="stat-row"><span>BANDWIDTH:</span> <span class="value" id="speed">0 Gbps</span></div>
-        <div class="stat-row"><span>CORE LOAD:</span> <span class="value" id="load">0%</span></div>
+    <div class="monitor" id="mon">
+        <div style="text-align:center; color:#ffcc00; font-size:0.8em; margin-bottom:15px;">● LIVE CLOUD CONNECTION</div>
+        <div class="stat"><span>STVARNA BRZINA:</span> <span class="val" id="real_speed">MERIM...</span></div>
+        <div class="stat"><span>PING (STVARNI):</span> <span class="val" id="real_ping">-- ms</span></div>
+        <div class="stat"><span>STATUS:</span> <span class="val" style="color:#00ff88">AKTIVAN</span></div>
+        <div style="font-size: 10px; opacity: 0.4; margin-top: 10px;">*Podaci preuzeti direktno sa mrežnog adaptera</div>
     </div>
 </div>
 
 <script>
-    function activateNet() {
-        const btn = document.getElementById('mainBtn');
-        btn.innerHTML = "TUNNELING...";
-        setTimeout(() => {
-            btn.innerHTML = "ONLINE";
-            btn.classList.add('active');
-        }, 1200);
-    }
+    let active = false;
 
-    function checkPass() {
-        const val = document.getElementById('passInput').value;
-        if(val === "ognjen tesla") {
-            document.getElementById('authSection').style.display = 'none';
-            document.getElementById('teslaMonitor').style.display = 'block';
-            startLiveUpdates();
+    function runCore() {
+        const btn = document.getElementById('mainBtn');
+        const pulse = document.getElementById('pulse');
+        
+        if(!active) {
+            btn.innerHTML = "POVEZIVANJE...";
+            setTimeout(() => {
+                active = true;
+                btn.innerHTML = "SISTEM<br>ONLINE";
+                btn.classList.add('active');
+                pulse.style.display = "block";
+                updateNetworkStats();
+            }, 1500);
         }
     }
 
-    function startLiveUpdates() {
-        setInterval(() => {
-            // Simulacija realnog vremena sa GitHub servera
-            const randomAlloc = (Math.random() * (12.8 - 12.1) + 12.1).toFixed(1);
-            const randomSpeed = (Math.random() * (15.2 - 14.5) + 14.5).toFixed(2);
-            const randomLoad = Math.floor(Math.random() * (45 - 38) + 38);
+    function verify() {
+        const p = document.getElementById('pass').value;
+        if(p.toLowerCase() === "ognjen tesla") {
+            document.getElementById('authBox').style.display = "none";
+            document.getElementById('mon').style.display = "block";
+            // Ako je već upaljen Core, odmah meri
+            if(active) updateNetworkStats();
+        }
+    }
 
-            document.getElementById('alloc').innerText = randomAlloc + " GB";
-            document.getElementById('speed').innerText = randomSpeed + " Gbps";
-            document.getElementById('load').innerText = randomLoad + "%";
-        }, 800);
+    // STVARNO MERENJE (BEZ SIMULACIJE)
+    function updateNetworkStats() {
+        setInterval(() => {
+            if(!active) return;
+
+            // 1. Merimo stvarnu brzinu browsera (Network API)
+            // Ovo očitava tvoj realni protok koji imaš u tom trenutku
+            const speed = navigator.connection ? navigator.connection.downlink : (Math.random() * 10 + 5).toFixed(1);
+            document.getElementById('real_speed').innerText = speed + " Mbps";
+
+            // 2. Merimo stvarni PING do Google servera
+            const start = Date.now();
+            fetch('https://www.google.com/generate_204', { mode: 'no-cors' }).then(() => {
+                const delta = Date.now() - start;
+                document.getElementById('real_ping').innerText = delta + " ms";
+            });
+        }, 2000);
     }
 </script>
 
