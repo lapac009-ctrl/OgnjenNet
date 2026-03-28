@@ -3,139 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OGNJEN NET | TESLA VIRTUAL ISP</title>
+    <title>OGNJEN NET | ADMIN CONTROL</title>
     <style>
-        /* Moderni Cyberpunk / Glassmorphism Dizajn */
-        body {
-            margin: 0;
-            padding: 0;
-            background: radial-gradient(circle, #0a0a0a 0%, #000000 100%);
-            color: #ffffff;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            overflow: hidden;
-        }
-
-        .container {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 40px;
-            padding: 40px;
-            text-align: center;
-            box-shadow: 0 0 50px rgba(0, 212, 255, 0.1);
-            width: 350px;
-        }
-
-        h1 {
-            font-size: 2.5em;
-            letter-spacing: 5px;
-            color: #00d4ff;
-            margin-bottom: 5px;
-            text-shadow: 0 0 15px #00d4ff;
-        }
-
-        p {
-            font-size: 0.9em;
-            opacity: 0.7;
-            margin-bottom: 30px;
-        }
-
-        /* Glavno Okruglo Tesla Dugme */
-        .tesla-button {
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            border: 5px solid #00d4ff;
-            background: transparent;
-            color: #00d4ff;
-            font-size: 1.2em;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.5s ease;
-            box-shadow: inset 0 0 20px rgba(0, 212, 255, 0.2), 0 0 20px rgba(0, 212, 255, 0.2);
-            outline: none;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 0 auto;
-        }
-
-        .tesla-button:hover {
-            box-shadow: inset 0 0 40px rgba(0, 212, 255, 0.5), 0 0 40px rgba(0, 212, 255, 0.5);
-            transform: scale(1.05);
-        }
-
-        .tesla-button.active {
-            border-color: #00ff88;
-            color: #00ff88;
-            box-shadow: inset 0 0 60px rgba(0, 255, 136, 0.6), 0 0 60px rgba(0, 255, 136, 0.6);
-            text-shadow: 0 0 10px #00ff88;
-        }
-
-        .stats {
-            margin-top: 30px;
-            display: none;
-        }
-
-        .stat-item {
-            font-size: 1.1em;
-            margin: 5px 0;
-            color: #00ffcc;
-        }
-
-        .loading-bar {
-            width: 0%;
-            height: 2px;
-            background: #00d4ff;
-            margin-top: 20px;
-            transition: width 2s ease;
-        }
+        body { margin: 0; background: #000; color: #fff; font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
+        .container { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px); border: 1px solid #00d4ff; border-radius: 40px; padding: 40px; text-align: center; width: 350px; box-shadow: 0 0 30px #00d4ff44; }
+        h1 { font-size: 2em; color: #00d4ff; text-shadow: 0 0 10px #00d4ff; }
+        .tesla-btn { width: 180px; height: 180px; border-radius: 50%; border: 4px solid #00d4ff; background: none; color: #00d4ff; font-weight: bold; cursor: pointer; transition: 0.3s; margin: 20px auto; display: block; }
+        .tesla-btn.active { border-color: #00ff88; color: #00ff88; box-shadow: 0 0 30px #00ff88; }
+        .stats { margin-top: 20px; font-family: monospace; }
+        .admin-box { margin-top: 20px; padding: 10px; border-top: 1px solid #333; display: none; }
+        input { background: #111; border: 1px solid #00d4ff; color: #fff; padding: 5px; border-radius: 5px; width: 80%; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>OGNJEN NET</h1>
-    <p>TESLA VIRTUAL INFRASTRUCTURE</p>
+    <h1 onclick="showAdmin()">OGNJEN NET</h1>
+    <p id="sub">VIRTUAL INFRASTRUCTURE</p>
 
-    <button class="tesla-button" id="mainBtn" onclick="activateNet()">
-        START<br>TESLA CORE
-    </button>
+    <button class="tesla-btn" id="mainBtn" onclick="activateNet()">START<br>TESLA CORE</button>
 
-    <div class="loading-bar" id="loader"></div>
+    <div class="stats" id="statsArea" style="display:none;">
+        <div id="ping">PING: 1 ms</div>
+        <div id="speed">SPEED: 12.4 Gbps</div>
+        <div id="status" style="color:#00ff88">STATUS: ONLINE</div>
+    </div>
 
-    <div class="stats" id="statsArea">
-        <div class="stat-item" id="ping">PING: 1 ms</div>
-        <div class="stat-item" id="speed">SPEED: 12.4 Gbps</div>
-        <div class="stat-item" style="color: #00ff88;">STATUS: ONLINE</div>
+    <div class="admin-box" id="adminPanel">
+        <p style="color:#ffcc00">ADMIN MODE AKTIVAN</p>
+        <input type="text" id="msgInput" placeholder="Pošalji poruku svima...">
+        <button onclick="sendAlert()" style="margin-top:10px; cursor:pointer;">POŠALJI</button>
     </div>
 </div>
 
 <script>
+    let clickCount = 0;
+    function showAdmin() {
+        clickCount++;
+        if(clickCount >= 5) { // Klikni 5 puta na naslov "OGNJEN NET" da otvoriš Admin Panel
+            document.getElementById('adminPanel').style.display = 'block';
+            alert("ADMIN MODE OTKLJUČAN!");
+        }
+    }
+
     function activateNet() {
         const btn = document.getElementById('mainBtn');
-        const loader = document.getElementById('loader');
-        const stats = document.getElementById('statsArea');
-
         btn.innerHTML = "POVEZIVANJE...";
-        loader.style.width = "100%";
-
-        // Simulacija povezivanja na tvoj GitHub backend
         setTimeout(() => {
             btn.innerHTML = "TESLA NET<br>AKTIVAN";
             btn.classList.add('active');
-            stats.style.display = "block";
-            
-            // Ovde JavaScript može da pokrene WebRTC zahtev 
-            // koji optimizuje tvoju lokalnu IP putanju.
-            console.log("Ognjen Net: Protokol aktiviran preko GitHub Pages.");
-        }, 2500);
+            document.getElementById('statsArea').style.display = 'block';
+        }, 1500);
+    }
+
+    function sendAlert() {
+        let msg = document.getElementById('msgInput').value;
+        alert("SISTEMSKA PORUKA: " + msg);
     }
 </script>
-
 </body>
 </html>
